@@ -21,6 +21,7 @@
 	<!-- DataSource : DB연결 설정 -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 	      <constructor-arg ref="hikariConfig" />
+	      <property name="maxLifetime" value="900000" />
 	</bean>	
 	<!-- DataSource : DB연결 설정 -->
 

@@ -23,4 +23,7 @@ public class ClassVO {
 	private Integer c_price;
 	private String c_confirm;
 	private Timestamp c_regdate;
+	
+	// 출력용 평점
+	private Double score;
 }

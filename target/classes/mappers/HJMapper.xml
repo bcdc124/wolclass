@@ -11,55 +11,6 @@
 	]]> 
 	</select>
 	
-	<!-- 인기 검색어 조회 hj -->
-	<select id="pslist" resultType="com.wolclass.domain.PopularSearchVO">
-	<![CDATA[  
-		select ps_text, count(*) 
-		from wc_popular_search
-		where datediff(now(), ps_regdate) < 1
-		group by ps_text
-		order by count(*) desc, max(ps_regdate) desc
-		limit 10
-	]]> 
-	</select>
-	<!-- 인기 검색어 조회 hj -->
-	
-	<!-- 클래스 검색 조회 및 페이징 hj -->
-	<select id="pslist" resultType="com.wolclass.domain.PopularSearchVO">
-	<![CDATA[  
-		select c.c_no, c.c_name, c.c_addr1, c.c_addr2, c.c_lati, c.c_longi, c.c_level, c.c_category, c.c_img, c.c_price, r.score
-		from wc_class c left join (select c_no, avg(r_score) score, count(*) cnt from wc_reply group by c_no) r
-		on c.c_no = r.c_no
-		where c.c_no in (select c_no from wc_timetable where time(t_start) >= #{timestart} and time(t_end) <= #{timeend})
-		and c.c_name like concat('%',#{search},'%')
-		and c.c_category like concat('%',#{category},'%')
-		and c.c_addr1 like concat('%',#{addr},'%')
-		and c.c_level in (#{lowlv},#{midlv},#{highlv})
-		and c.c_price between #{pricestart} and #{priceend}
-		order by
-		-- c.c_regdate desc;
-		-- r.cnt*r.score desc;
-		-- ???
-		-- c.c_price;
-		c.c_price desc;
-		limit 12
-		offset #{}
-		
-	]]> 
-		<choose>
-			<when test="userId != null">
-			user_id = #{userId}
-			</when>
-			<when test="userName != null">
-			user_name = #{userName}
-			</when>
-			<otherwise>
-			user_id = 0
-			</otherwise>
-		</choose>
-	</select>
-	<!-- 클래스 검색 조회 및 페이징 hj -->
-	
 	<insert id="insert">
 	
 	</insert>

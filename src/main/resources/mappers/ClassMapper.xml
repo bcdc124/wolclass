@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wolclass.mappers.ClassMapper">
+	
+	<!-- 페이징 처리를 위한 전채 글 갯수 -->
+	<select id="classListCnt" parameterType="map" resultType="int">
+	<![CDATA[  
+		select count(*)
+		from wc_class c
+		where c_no in (select c_no from wc_timetable where time(t_start) >= #{timestart} and time(t_end) <= #{timeend})
+		and c_name like concat('%',#{search},'%')
+		and c_category like concat('%',#{category},'%')
+		and c_addr1 like concat('%',#{addr},'%')
+		and c_level in (#{lowlv,javaType=int},#{midlv,javaType=int},#{highlv,javaType=int})
+		and c_price between #{pricestart,javaType=int} and #{priceend,javaType=int}
+	]]> 
+	</select>
+	<!-- 페이징 처리를 위한 전채 글 갯수 -->
+	
+	<!-- 클래스 검색 조회 및 페이징 hj -->
+	<!-- 최신1 인기2 거리3 낮은4 높은5 -->
+	<select id="classList" resultType="ClassVO">
+	<![CDATA[  
+		select c.c_no, c.c_name, c.c_addr1, c.c_addr2, c.c_lati, c.c_longi, c.c_level, c.c_category, c.c_img, c.c_price, r.score
+		from wc_class c left join (select c_no, avg(r_score) score, count(*) cnt from wc_reply group by c_no) r
+		on c.c_no = r.c_no
+		where c.c_no in (select c_no from wc_timetable where time(t_start) >= #{timestart} and time(t_end) <= #{timeend})
+		and c.c_name like concat('%',#{search},'%')
+		and c.c_category like concat('%',#{category},'%')
+		and c.c_addr1 like concat('%',#{addr},'%')
+		and c.c_level in (#{lowlv},#{midlv},#{highlv})
+		and c.c_price between #{pricestart} and #{priceend}
+		order by
+	]]>	
+		<choose>
+			<when test="order == 1">
+			r.cnt*r.score desc
+			</when>
+			<when test="order == 3">
+			c.c_price
+			</when>
+			<when test="order == 4">
+			c.c_price desc
+			</when>
+			<otherwise>
+			c.c_regdate desc
+			</otherwise>
+		</choose>
+	<![CDATA[
+		limit #{pageSize,javaType=int}
+		offset #{startRow,javaType=int}
+	]]> 
+	</select>
+	<!-- 최신0 인기1 거리2 낮은3 높은4 -->
+	<!-- 클래스 검색 조회 및 페이징 hj -->
+	
+	<insert id="insert">
+	
+	</insert>
+	
+	<update id="updateMember">
+	
+	</update>
+	
+	<delete id="deleteMember">
+	
+	</delete>
+	
+</mapper>	
