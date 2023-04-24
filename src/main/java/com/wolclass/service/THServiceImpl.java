@@ -46,6 +46,13 @@ public class THServiceImpl implements THService {
 		List resultVO = dao.getTime(vo);
 		return resultVO;
 	}
+
+	@Override
+	public TimetableVO getRemainNum(TimetableVO vo) throws Exception {
+		logger.info("service도착");
+		TimetableVO resultVO = dao.getRemainNum(vo);
+		return resultVO;
+	}
 	
 	
 	

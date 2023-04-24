@@ -3,6 +3,17 @@
     
 <%@ include file="../include/header.jsp" %>
 
+<!-- 팝업창 제어 -->
+<input type="hidden" id="srchdata" value='${jsonStr}'>
+<script type="text/javascript">
+function openMap(option){
+	let popup = window.open('./popupMap','지도 검색','width=500,height=800,top=50%,left=50%,location=no');
+	window.addEventListener("beforeunload", function() {
+		popup.close();
+	});
+}
+</script>
+<!-- 팝업창 제어 -->
 <!-- 클래스 리스트 hj -->
 <div class="col-md-12 padding-top-40 properties-page">
 	<!-- 버튼 컨테이너 -->
@@ -22,26 +33,12 @@
         <div class="col-xs-2 layout-switcher">
             <button class="btn border-btn more-black" onclick="openMap('local')"><i class="fa fa-map-marker"></i> 내 주변 검색</button>
             <button class="btn border-btn more-black" onclick="openMap('marker')"><i class="fa fa-map-marker"></i> 지도 열기</button>
-            <button class="btn border-btn more-black" onclick="popupCloser()"><i class="fa fa-map-marker"></i> 임시</button>
         </div>
 		<!-- 지도 열기 버튼  -->
 		<!-- 정렬 조건 설정  -->
 
 		<!-- 정렬 조건 설정  -->
         
-        <!-- 팝업창에 데이터 전송 -->
-        <input type="hidden" id="mapOption">
-        <script type="text/javascript">
-        let popup;
-       	function openMap(option){
-       		document.getElementById("mapOption").value = option;
-       		popup = window.open('./popupMap','지도 검색','width=500,height=800,top=50%,left=50%,location=no');
-       	}
-       	function popupCloser(){
-       		popup.close();
-       	}
-        </script>
-        <!-- 팝업창에 데이터 전송 -->
 	</div>
 	<!-- 버튼 컨테이너 -->
 	<!-- 리스트 컨테이너 -->

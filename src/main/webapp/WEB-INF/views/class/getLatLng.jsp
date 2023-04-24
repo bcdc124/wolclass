@@ -9,7 +9,7 @@
 <body>
 <input type="text" id="lat">
 <input type="text" id="lng">
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0855a981db011b9c4778f98b0871b031&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0855a981db011b9c4778f98b0871b031&libraries=services"></script>
 <script>
 	// 주소-좌표 변환 객체를 생성합니다
 	var geocoder = new kakao.maps.services.Geocoder();

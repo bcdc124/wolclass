@@ -28,4 +28,10 @@ public class DBDAOImpl implements DBDAO{
 	public Integer idCheck(String m_id) {
 		return sqlSession.selectOne(NAMESPACE+".idCheck",m_id);
 	}
+	
+	@Override
+	public MemberVO memberLogin(MemberVO vo) throws Exception {
+		MemberVO resultVO = sqlSession.selectOne(NAMESPACE+".loginMember", vo);
+		return resultVO;
+	}
 }

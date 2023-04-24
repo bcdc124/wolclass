@@ -65,6 +65,17 @@ public class THDAOImpl implements THDAO{
 		System.out.println(resultVO.size());
 		return resultVO;
 	}
+
+
+
+	@Override
+	public TimetableVO getRemainNum(TimetableVO vo) throws Exception {
+		logger.info("dao 도착");
+		TimetableVO resultVO = sqlSession.selectOne(NAMESPACE+".getRemainNum",vo);
+		logger.info("dao-resultVO: "+resultVO);
+		System.out.println(resultVO);
+		return resultVO;
+	}
 	
 	
 	

@@ -17,7 +17,7 @@
 	<select id="getTimetable" resultType="TimetableVO">
 	<![CDATA[  
 	select * from wc_timetable
-	where t_rem_p < (select c_maxperson from wc_class where c_no=#{c_no})
+	where t_rem_p >0
 	and c_no = #{c_no}
 	]]>
 	</select>
@@ -27,7 +27,16 @@
 	<![CDATA[
 	select t_start from wc_timetable
 	where t_date=#{t_date} and c_no = #{c_no}
-	and t_rem_p < (select c_maxperson from wc_class where c_no=#{c_no})
+	and t_rem_p <= (select c_maxperson from wc_class where c_no=#{c_no})
 	]]>
 	</select>
+	
+	<!-- 예약가능한 최대 인원 구하기 TH -->
+		<select id="getRemainNum" resultType="TimetableVO"> 
+	<![CDATA[
+	select t_rem_p from wc_timetable
+	where c_no=#{c_no} and t_date = #{t_date} and t_start=#{t_start}
+	]]>
+	</select>
+	
 </mapper>	

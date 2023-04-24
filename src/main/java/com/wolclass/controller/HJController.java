@@ -18,4 +18,9 @@ public class HJController {
 	private HJService service;
 	
 
+	@RequestMapping("/test")
+	public String test() {
+		
+		return "/class/getLatLng";
+	}
 }

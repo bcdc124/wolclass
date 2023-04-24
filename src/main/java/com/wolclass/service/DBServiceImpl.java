@@ -17,7 +17,7 @@ public class DBServiceImpl implements DBService{
 	@Autowired
 	private DBDAO dbdao;
 	
-	// 회원가입 db
+	// 회원가입 - 다빈
 	@Override
 	public void memberJoin(Map<String,Object> map) throws Exception {
 		dbdao.memberJoin(map);
@@ -27,6 +27,12 @@ public class DBServiceImpl implements DBService{
 	@Override
 	public Integer idCheck(String m_id) throws Exception {
 		return dbdao.idCheck(m_id);
+	}
+	// 로그인 - 다빈
+	@Override
+	public MemberVO memberLogin(MemberVO vo) throws Exception {
+		MemberVO loginResultVO = dbdao.memberLogin(vo);
+		return loginResultVO;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.wolclass.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.wolclass.domain.ClassVO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wolclass.service.ClassService;
 import com.wolclass.service.PSService;
 
@@ -31,7 +32,11 @@ public class ClassController {
 	public void listGET(@RequestParam Map<String,Object> map, Model model) throws Exception {
 		logger.info(" ClassController-listGET() 호출 ");
 		model.addAttribute("psList", psservice.getPSList());
-		model.addAttribute(cservice.getClassList(map));
+		List list = cservice.getClassList(map);
+		model.addAttribute(list);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonStr = objectMapper.writeValueAsString(list);
+		model.addAttribute("jsonStr",jsonStr);
 		model.addAttribute("map", map);
 	}
 	//클래스리스트 검색결과 출력 hj

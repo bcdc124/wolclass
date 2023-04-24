@@ -65,6 +65,23 @@ public class THController {
 	}
 	// 클래스 예약 가능한 시간 가져오기 TH
 	
+
+	// 클래스 예약 가능한 인원 가져오기 TH
+	@RequestMapping(value = "/getPNum", method = RequestMethod.POST)
+	@ResponseBody
+	public TimetableVO PNumPost(@RequestBody TimetableVO vo) throws Exception{
+
+		logger.info(" PNumPost() 호출 ");
+		logger.info("vo:"+vo);
+		TimetableVO pNum = service.getRemainNum(vo);
+		//logger.info("cvo : "+cvo );
+		logger.info("tvo : "+pNum);
+	
+		return pNum;
+	}
+	// 클래스 예약 가능한 인원 가져오기 TH
+	
+	
 	
 	// http://localhost:8080/th/calender
 	@RequestMapping(value = "/calender")

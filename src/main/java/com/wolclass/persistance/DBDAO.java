@@ -11,4 +11,7 @@ public interface DBDAO {
 	
 	// 아이디 중복검사
 	public Integer idCheck(String m_id);
+	
+	// 로그인
+	public MemberVO memberLogin(MemberVO vo) throws Exception;
 }

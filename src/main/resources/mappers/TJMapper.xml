@@ -12,4 +12,26 @@
 		 c_img=#{c_img}, c_price=#{c_price}, c_confirm=#{c_confirm})
 	</insert>	
 	
+	<select id="findByCategory" resultType="ClassVO">
+		select *
+		from wc_class
+		where c_category=#{c_category}
+	</select>
+	
+	<select id="getMemberInfo" resultType="MemberVO">
+		select *
+		from wc_member
+		where m_id = #{m_id}
+	</select>
+	
+	<select id="getCategoryClassList" resultType="ClassVO">
+		SELECT * FROM wc_class
+		order by c_category asc;
+	</select>
+	
+	<insert id="insertAlert">
+	</insert>
+	
+	
+	
 </mapper>	

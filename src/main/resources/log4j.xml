@@ -14,12 +14,12 @@
 	<logger name="com.wolclass.controller">
 		<level value="info" />
 	</logger>
-<!-- 	<logger name="com.wolclass.service"> -->
-<!-- 		<level value="info" /> -->
-<!-- 	</logger> -->
-<!-- 	<logger name="com.wolclass.persistance"> -->
-<!-- 		<level value="info" /> -->
-<!-- 	</logger> -->
+	<logger name="com.wolclass.service">
+		<level value="info" />
+	</logger>
+	<logger name="com.wolclass.persistance">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">

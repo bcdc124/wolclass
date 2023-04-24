@@ -20,4 +20,7 @@ public interface THDAO {
 	
 	// 예약 가능한 시간 TH
 	public List<TimetableVO> getTime(TimetableVO vo) throws Exception;
+	
+	// 예약 가능한 최대 인원 TH
+	public TimetableVO getRemainNum(TimetableVO vo) throws Exception;
 }

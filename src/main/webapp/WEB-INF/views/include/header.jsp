@@ -57,9 +57,62 @@
         <link rel="stylesheet" type="text/css" href="/resources/assets/css/styleNoJS.css" />
         </noscript>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+        
+        <!-- Font Awesome CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
+		integrity="sha512-......" 
+		crossorigin="anonymous" />
+        <!-- Font Awesome CSS -->
+        
+<!-- 알림 버튼 css -->
+<style type="text/css">
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#notification-button {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+}
+
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-popup {
+  position: absolute;
+  right: 0;
+  bottom: -310px;
+  width: 250px;
+  height: 300px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: none;
+}
+
+</style>
+<!-- 알림 버튼 css -->
     </head>
 <body>
-<nav class="navbar navbar-default " style="position: ; top: 0; left: 0; width: 100%; z-index: 9999;">
+<nav class="navbar navbar-default " style="position: ; top: 0; left: 0; width: 100%; z-index: 9999; padding-bottom: 10px;">
                 <div class="navbar-header" style="margin-left: 100px;">
 <!--                         <span class="">WolClass</span> -->
 <!--                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation"> -->
@@ -67,7 +120,7 @@
 <!--                         <span class="icon-bar"></span> -->
 <!--                         <span class="icon-bar"></span> -->
 <!--                     </button> -->
-                    <a class="navbar-brand" href="/tj/main"><img src="/resources/img/no_img.PNG" alt="wolClass" style="height: 90px;"></a>
+                    <a class="navbar-brand" href="/tj/main"><img src="/resources/img/logo.PNG" alt="wolClass" style="height: 90px;"></a>
                 </div>
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -75,7 +128,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse yamm" id="navigation">
  <div class="search-form wow pulse animated" data-wow-delay="0.8s" style="visibility: visible; animation-delay: 0.8s; border: 0px; box-shadow: 0px 0px 0px; 
-  animation-name: pulse;">
+  animation-name: pulse; background: none;">
                             <form action="" class=" form-inline">
                                 <button class="btn  toggle-btn" type="button"><i class="fa fa-bars"></i></button>
 
@@ -83,11 +136,37 @@
                                     <input type="text" class="form-control" placeholder="Key word">
                                 </div>
                                 <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
-								<div class="button navbar-right" style="padding-right: 30px">
-                       			  <button class="navbar-btn nav-button wow bounceInRight class" data-wow-delay="0.4s">클래스 등록</button>
+								<div class="button navbar-right" style="padding: 0px;">
+								<c:choose>
+								  <c:when test="${sessionScope.m_id.equals('admin') }">
+                       			  <button class="navbar-btn nav-button wow bounceInRight class" data-wow-delay="0.4s">관리자</button>
+								  </c:when>
+								  <c:otherwise>
+                       			  <button class="navbar-btn nav-button wow bounceInRight class" data-wow-delay="0.4s" 
+                       			  style="margin-right: 30px;" id="addClass">클래스 등록</button>
+								  </c:otherwise>
+								</c:choose>
+                       			  
+								<c:if test="${empty sessionScope.m_id }">
                        			  <button class="navbar-btn nav-button wow bounceInRight login" data-wow-delay="0.4s">로그인</button>
-                      			  <button class="navbar-btn nav-button wow fadeInRight"  data-wow-delay="0.5s">회원가입</button>
+                      			  <button class="navbar-btn nav-button wow fadeInRight" id="join" data-wow-delay="0.5s">회원가입</button>
+								</c:if>
+								
+								<c:if test="${not empty sessionScope.m_id }">
+                      			  <button class="navbar-btn nav-button wow fadeInRight"  data-wow-delay="0.5s">
+                      			   <i class="fas fa-user-circle"></i>마이페이지</button>
+								<!-- 알림 버튼 -->
+                       			  <div class="notification-container">
+									  <button id="notification-button">
+									    <i class="fa fa-bell"></i>
+									    <span class="notification-count">10</span>
+									  </button>
+									  <div id="notification-popup" class="notification-popup"></div>
+									</div>
+								<!-- 알림 버튼 -->
+								</c:if>
                   			    </div>
+                  			    
                                 <div style="display: none;" class="search-toggle">
 
                                     <div class="search-row">   
@@ -274,8 +353,39 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('.class').click(function(){
-			location.href='/tj/addClass';
+		$('#join').click(function(){
+			alert('회원가입');
+			location.href="/db/join";
+			return false;
 		})
+		
+		$('#addClass').click(function(){
+			alert('클래스 등록');
+			location.href="/tj/addClass";
+			return false;
+		});
 	});
+	
+	// 알림창 js 코드 - 태준
+	const notificationButton = document.getElementById('notification-button');
+	const notificationPopup = document.getElementById('notification-popup');
+
+	notificationButton.addEventListener('click', function() {
+	// toggle notification popup
+	notificationPopup.style.display = notificationPopup.style.display === 'block' ? 'none' : 'block';
+
+	// close notification popup when clicked outside of it
+	window.addEventListener('click', function(e) {
+    if (!notificationPopup.contains(e.target) && !notificationButton.contains(e.target)) {
+      notificationPopup.style.display = 'none';
+      }
+    });
+
+   // prevent notification popup from closing when clicked inside of it
+   notificationPopup.addEventListener('click', function(e) {
+  	 e.stopPropagation();
+	   });
+	});
+	// 알림창 js 코드 - 태준
+
 </script>
