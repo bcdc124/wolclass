@@ -1,6 +1,7 @@
 package com.wolclass.persistance;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -44,16 +45,16 @@ public class SwBoardDAOImpl implements SwBoardDAO{
 		
 		// 전체 글 정보 가져오기 
 		@Override
-		public List<BoardVO> getBoardListAll() throws Exception {
+		public List<BoardVO> getBoardListAll(Map<String, Object> map) throws Exception {
 			// 서비스 호출로 DAO는 mapper의 쿼리 호출 정보 저장
 			
-			return sqlSession.selectList(NAMESPACE + ".listAll");
+			return sqlSession.selectList(NAMESPACE + ".listAll", map);
 		}
 		
 		// 페이징 처리 
 		@Override
-		public int selectPNBT(BoardVO vo) {
-			return (int)sqlSession.selectOne(NAMESPACE +".boardPageNum", vo);
+		public int selectPNBT(Map<String, Object> map) {
+			return sqlSession.selectOne(NAMESPACE +".boardPageNum", map);
 		}
 		
 		// 조회수 1증가

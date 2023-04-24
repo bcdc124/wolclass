@@ -1,6 +1,7 @@
 package com.wolclass.persistance;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wolclass.domain.BoardVO;
 
@@ -13,10 +14,10 @@ public interface SwBoardDAO {
 		public void createBoard(BoardVO vo) throws Exception;
 		
 		// 글 전체 목록
-		public List<BoardVO> getBoardListAll() throws Exception;
+		public List<BoardVO> getBoardListAll(Map<String, Object> map) throws Exception;
 
 		// 페이징처리
-		public int selectPNBT(BoardVO vo) throws Exception;
+		public int selectPNBT(Map<String, Object> map) throws Exception;
 		
 		// 글 조회수 1증가
 		public void updateViewcnt(Integer b_no) throws Exception;

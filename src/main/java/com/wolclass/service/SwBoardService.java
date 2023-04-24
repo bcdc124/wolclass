@@ -1,6 +1,7 @@
 package com.wolclass.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wolclass.domain.BoardVO;
 
@@ -13,10 +14,10 @@ public interface SwBoardService {
 	public void writeBoard(BoardVO vo) throws Exception;
 	
 	// 모든 게시판 글목록 가져오기
-	public List<BoardVO> getBoardListAll() throws Exception;
+	public List<BoardVO> getBoardListAll(Map<String, Object> map) throws Exception;
 	
 	// 페이징처리
-	public int selectPageNumBoTotal(BoardVO vo) throws Exception;
+	public List<BoardVO> selectPageNumBoTotal(Map<String, Object> map) throws Exception;
 	
 	// 게시판 글 조회수 1증가
 	public void incrementViewCnt(Integer b_no) throws Exception;

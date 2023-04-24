@@ -51,9 +51,9 @@ background: #FDC600;
 						</div>
 							<form role="form" method="get" style="margin-left: 68%; display: flex;">
 								<div class="category-search">
-									<select style="width: 100px;" name="boardCategory">
-										<option value="board | recruit | announcement">전체글</option>
-										<option value="board">일반글</option>
+									<select style="width: 100px;" name="b_category"  >
+										<option value="" >전체글</option>
+										<option value="board" >일반글</option>
 										<option value="recruit">모집글</option>
 										<option value="announcement">공지사항</option>
 									</select>
@@ -62,11 +62,11 @@ background: #FDC600;
 								<div class="box-tools">
 									<div class="input-group input-group-sm hidden-xs">
 										<input style="width: 200px; margin-left: 58px;" type="text"
-											name="table_search" class="form-control pull-right"
-											placeholder="키워드를 입력해주세요">
+											name="search" class="form-control pull-right"
+											placeholder="키워드를 입력해주세요" value="${map.get('search')}">
 
 										<div class="input-group-btn">
-											<button type="submit" class="btn btn-default" onclick="">
+											<button type="submit" class="btn btn-default" >
 												<i class="fa fa-search"></i>
 											</button>
 										</div>
@@ -95,13 +95,15 @@ background: #FDC600;
 								<tr>
 									<td>${vo.b_no }</td>
 									<td>
-									${vo.b_category }
-									<%-- <c:if test="${vo.b_category }='board'">
-									일반글</c:if>
-									<c:if test="${vo.b_category }='recruit'">
-									모집글</c:if>
-									<c:if test="${vo.b_category }='announcement'">
-									공지사항</c:if> --%>
+									<c:if test="${vo.b_category == 'board'}">
+									일반글
+									</c:if>
+									<c:if test="${vo.b_category == 'recruit'}">
+									모집글
+									</c:if>
+									<c:if test="${vo.b_category =='announcement'}">
+									<strong>공지사항</strong>
+									</c:if>
 									</td>
 									<td><a href="/sw/swRead?b_no=${vo.b_no }">
 											${vo.b_title } </a></td>
@@ -159,6 +161,10 @@ background: #FDC600;
 		if (result == "delOK") {
 			alert("글 삭제 완료!");
 		}
+		
+		
+
+ 
 	</script>
 
 

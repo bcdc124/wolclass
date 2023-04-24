@@ -1,6 +1,7 @@
 package com.wolclass.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wolclass.domain.BoardVO;
@@ -51,40 +53,18 @@ public class SWController {
 	  // http://localhost:8080/sw/community 
 	  // 글 전체 조회	  
 	  @RequestMapping(value = "/community", method = RequestMethod.GET ) 
-	  public void listAllGET(@ModelAttribute("result") String result, Model model, 
-			  BoardVO vo) throws
-	  Exception { logger.info(" listAllGet() 글전체 조회"); logger.info(" result : " +
-	  result);
+	  public void listAllGET(@RequestParam Map<String,Object> map, Model model) throws	Exception { 
+		  logger.info(" listAllGet() 글전체 조회"); 
 	  
-	  // 페이징 처리 글 전체 개수
-		
-		  int total = service.selectPageNumBoTotal(vo); 
-		  int totalPage =  (int)Math.ceil((double)total/2);
-		  int viewPage;
-	  
-	  List<BoardVO> boardList = service.getBoardListAll(); 
-	  logger.info(" total : " + boardList.size());
-		
-		  logger.info("total :" + total); logger.info("totalPage :" + totalPage);
+		  List<BoardVO> boardList = service.selectPageNumBoTotal(map); 
+		  logger.info(" boardList {}",boardList.size()); 
 		  
-		  
-		  model.addAttribute("total", total); 
-		  model.addAttribute("totalPage", totalPage);
+		  model.addAttribute("map", map);
 		  model.addAttribute("boardList", boardList);
 	  }
 	   
-	  // sw/community }
 	  
-	  /*// 페이징 처리 
-	  @RequestMapping(value = "/community", method = requestMethod/)
-	  public String selectPageNumBo(BoardVO vo, Model) throws Exception {
-	  	
-	  	int total = boardService.selectPageNumBoTotal(vo);
-	  	List<BoardVO> boardList = service.getBoardListAll();
-	  
-	  
-	  
-	  }*/
+	
 	  
 	  
 	/*
