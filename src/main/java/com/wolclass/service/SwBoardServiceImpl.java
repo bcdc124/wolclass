@@ -65,7 +65,7 @@ public class SwBoardServiceImpl implements SwBoardService {
 		map.put("startRow", startRow-1);
 		map.put("pageSize", pageSize);
 		if(count > 0)  list = bdao.getBoardListAll(map);
-		int pageCount = count/pageSize + (count%pageSize==0? 0:1);
+		int pageCount = (count/pageSize) + (count%pageSize==0? 0:1);
 		int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;
 		int endPage = startPage + pageBlock - 1;
 		if(endPage > pageCount) endPage = pageCount;
@@ -79,7 +79,6 @@ public class SwBoardServiceImpl implements SwBoardService {
 		map.put("startPage", startPage);
 		map.put("endPage", endPage);
 		// 페이징 처리에 필요한 데이터 셋팅
-		
 		return list;
 	}
 	

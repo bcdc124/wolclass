@@ -51,7 +51,7 @@ background: #FDC600;
 						</div>
 							<form role="form" method="get" style="margin-left: 68%; display: flex;">
 								<div class="category-search">
-									<select style="width: 100px;" name="b_category"  >
+									<select style="width: 100px;" name="b_category" id="b_category1"  >
 										<option value="" >전체글</option>
 										<option value="board" >일반글</option>
 										<option value="recruit">모집글</option>
@@ -134,10 +134,10 @@ background: #FDC600;
 			<!-- 페이징처리  -->
 			<div class="box-footer clearfix">
 				<div>
-					<ul class="pagination pagination-sm no-margin pull-right">
+					<ul class="pagination pagination-sm no-margin pull-right" >
 						<li><a href="#">«</a></li>
-						<c:forEach var="i" begin="1" end="${totalPage}" step="1">
-							<li><a href="community?viewpage=${i}">i</a></li>
+						<c:forEach var="i" begin="${map.get('startPage')}" end="${map.get('endPage')}">
+							<li><a href="community?viewpage=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a href="#">»</a></li>
 					</ul>
@@ -161,7 +161,9 @@ background: #FDC600;
 		if (result == "delOK") {
 			alert("글 삭제 완료!");
 		}
-		
+		$(function(){
+			$("#b_category1").val("${param.b_category}").attr("selected","selected");
+		});
 		
 
  
