@@ -1,5 +1,8 @@
 package com.wolclass.persistance;
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.wolclass.domain.ClassVO;
+import com.wolclass.domain.TimetableVO;
 
 @Repository
 public class THDAOImpl implements THDAO{
@@ -34,6 +38,31 @@ public class THDAOImpl implements THDAO{
 		logger.info("dao-sql호출");
 		ClassVO resultVO = sqlSession.selectOne(NAMESPACE+".selectClass",c_no);
 		logger.info("dao-resultVO: "+resultVO);
+		return resultVO;
+	}
+
+
+
+	@Override
+	public List<TimetableVO> getTimetable(Integer c_no) throws Exception {
+		
+		List resultVO = sqlSession.selectList(NAMESPACE+".getTimetable",c_no);
+	
+		logger.info("dao-resultVO: "+resultVO);
+		
+		return resultVO;
+	}
+
+
+
+	@Override
+	public List<TimetableVO> getTime(TimetableVO vo) throws Exception {
+		logger.info("dao 도착");
+		
+		List resultVO = sqlSession.selectList(NAMESPACE+".getTime",vo);
+		
+		logger.info("dao-resultVO: "+resultVO);
+		System.out.println(resultVO.size());
 		return resultVO;
 	}
 	

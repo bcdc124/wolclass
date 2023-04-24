@@ -7,13 +7,27 @@
 	
 
  	
-	<!-- 클래스 조회 -->
+	<!-- 클래스 조회 TH -->
 	<select id="selectClass" resultType="ClassVO">
 	select * from wc_class where c_no=#{c_no}
 	</select>
 	
-	<!--  -->
+
+	<!-- 예약가능한 타임테이블 TH -->	
 	<select id="getTimetable" resultType="TimetableVO">
-	select * from wc_timetable where c_no=#{c_no}
+	<![CDATA[  
+	select * from wc_timetable
+	where t_rem_p < (select c_maxperson from wc_class where c_no=#{c_no})
+	and c_no = #{c_no}
+	]]>
+	</select>
+	
+	<!-- 예약가능한 시간 타임테이블 TH -->	
+	<select id="getTime" resultType="TimetableVO"> 
+	<![CDATA[
+	select t_start from wc_timetable
+	where t_date=#{t_date} and c_no = #{c_no}
+	and t_rem_p < (select c_maxperson from wc_class where c_no=#{c_no})
+	]]>
 	</select>
 </mapper>	

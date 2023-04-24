@@ -4,15 +4,21 @@
 <%@ include file="../include/header.jsp" %>
 
 <meta charset="UTF-8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 <title>Insert title here</title>
 <script type="text/javascript">
 //특정날짜들 배열
-var disabledDays = ["2023-4-21","2023-4-24","2013-7-26"];
+//var disabledDays = ["2023-4-23","2023-4-24","2023-5-1"];
+var ableDays = new Array();
+var c_no = ${classVO.c_no};
+var date = null;
+var t_start = new Array();
 $( function() {
-    $( "#datepicker" ).datepicker({
+	console.log(date)
+	$("#time").hide();
+    $( "#thdatepicker" ).datepicker({
     	 dateFormat: 'yy-mm-dd',
          prevText: '이전 달',
          nextText: '다음 달',
@@ -24,13 +30,60 @@ $( function() {
          showMonthAfterYear: true,
          yearSuffix: '년',
          minDate: 0,
-         beforeShowDay: disableAllTheseDays 
+         beforeShowDay: ableAllTheseDays,
+         onSelect: function() { 
+        	 date = $.datepicker.formatDate("yy-mm-dd",$("#thdatepicker").datepicker("getDate")); 
+                                      
+        	 date = $("#thdatepicker").val();
+             alert(date);
+             if(date!=null){
+            	 console.log(date+"null아님~!1111");
+            	 
+            	 $.ajax({
+     				url:"/th/getTime",
+     				type:"post",
+     			 	data: JSON.stringify({t_date:date, c_no:c_no}),
+     			 	contentType: "application/json; charset=utf-8",
+     				dataType:"json",
+     				success:function(data){
+     					alert("성공");
+     					console.log(data);
+     				/* 	for(i=0; i<data.length; i++) {
+     						t_start[i] = data[i].t_start;
+     						$("#time").append(t_start[i]);
+     					}  */
+     					
+     				 	$("#time").show();
+     					/*
+     					$('select').empty();
+     					$('select').append("<option>"+data[0].t_start+"</option>");
+     					$('#timeBtn').append("<input type='button' value="+data[0].t_start+">");
+ */
+     			        var $time = $("#time");
+     			        $time.empty(); // 기존 옵션을 모두 지웁니다.
+     			        $.each(data, function(index, time) {
+     			            var $option = $("<option>").text(time.t_start).val(time.t_start);
+     			            $time.append($option);
+     			        });
+     		 		
+     				},	
+     				error:function(data){
+     					alert("실패");
+     					// 페이지 이동 후 실패했을 때 동작
+     				}
+     				
+     			});
+             }
+      
+         }
     });
+    
+
 });
   
 	$(document).ready(function(){
-      fnDatepicker("#datepicker");
-      $("#datepicker").val(getToday('yyyy-mm-dd'));
+      fnDatepicker("#thdatepicker");
+      $("#thdatepicker").val(getToday('yyyy-mm-dd'));
     });
 
 /*     function fnDatepicker(selector){
@@ -73,7 +126,7 @@ $( function() {
       return today;
     }
     
-	 // 특정일 선택막기
+    // 특정일 선택막기
     function disableAllTheseDays(date) {
         var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
         for (i = 0; i < disabledDays.length; i++) {
@@ -83,6 +136,28 @@ $( function() {
         }
         return [true];
     }
+	 
+	 // 특정일 선택막기
+    function ableAllTheseDays(date) {
+        var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+        for (i = 0; i < ableDays.length; i++) {
+            if($.inArray(y + '-' +(m+1) + '-' + d,ableDays) != -1) {
+                return [true];
+            }
+        }
+        return [false];
+    }
+	 
+var vaildDates = '${dateList }';
+var vaildDatesArr = vaildDates.split('t_date=');
+for(var i=1; i<vaildDatesArr.length; i++){
+	ableDays.push(vaildDatesArr[i].split(',')[0].replaceAll('-0','-'));
+}
+
+
+for(var i=0; i<ableDays.length; i++){
+	console.log(ableDays[i]);
+}
 
 </script>
 <body>
@@ -275,7 +350,9 @@ $( function() {
                     <div class="col-md-4 p0">
                         <aside class="sidebar sidebar-property blog-asside-right">
                        
-                     <div id="datepicker"></div>
+                     <div id="thdatepicker"></div>
+                     <select id="time"></select>
+                     <div id="timeBtn"></div>
                  	
 <!--                             <div class="dealer-widget">
                                 <div class="dealer-content">
